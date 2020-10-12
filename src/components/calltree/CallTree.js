@@ -40,7 +40,7 @@ import type {
   CallNodeDisplayData,
   WeightType,
 } from 'firefox-profiler/types';
-import type { CallTree as CallTreeType } from '../../profile-logic/call-tree';
+import type { CallTree } from '../../profile-logic/call-tree';
 
 import type { Column } from '../shared/TreeView';
 import type { ConnectedProps } from '../../utils/connect';
@@ -49,7 +49,7 @@ type StateProps = {|
   +threadsKey: ThreadsKey,
   +scrollToSelectionGeneration: number,
   +focusCallTreeGeneration: number,
-  +tree: CallTreeType,
+  +tree: CallTree,
   +callNodeInfo: CallNodeInfo,
   +selectedCallNodeIndex: IndexIntoCallNodeTable | null,
   +rightClickedCallNodeIndex: IndexIntoCallNodeTable | null,
@@ -71,7 +71,7 @@ type DispatchProps = {|
 
 type Props = ConnectedProps<{||}, StateProps, DispatchProps>;
 
-class CallTreeImpl extends PureComponent<Props> {
+class CallTreeComponent extends PureComponent<Props> {
   _mainColumn: Column = { propName: 'name', title: '' };
   _appendageColumn: Column = { propName: 'lib', title: '' };
   _treeView: TreeView<CallNodeDisplayData> | null = null;
@@ -298,7 +298,7 @@ class CallTreeImpl extends PureComponent<Props> {
   }
 }
 
-export const CallTree = explicitConnect<{||}, StateProps, DispatchProps>({
+export default explicitConnect<{||}, StateProps, DispatchProps>({
   mapStateToProps: (state: State) => ({
     threadsKey: getSelectedThreadsKey(state),
     scrollToSelectionGeneration: getScrollToSelectionGeneration(state),
@@ -327,5 +327,5 @@ export const CallTree = explicitConnect<{||}, StateProps, DispatchProps>({
     changeExpandedCallNodes,
     addTransformToStack,
   },
-  component: CallTreeImpl,
+  component: CallTreeComponent,
 });
